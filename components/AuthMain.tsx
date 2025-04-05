@@ -15,13 +15,13 @@ function AuthMain() {
           <GithubSignup />
           <GoogleSignup />
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-6 ">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-7">
           By continuing, you agree to our{" "}
           <span className="hover:underline text-blue-600 dark:text-blue-400">
             Terms of Service
           </span>
           and{" "}
-          <span className="hover:underline text-blue-600 dark:text-blue-400">
+          <span className="hover:underline text-blue-600 dark:text-blue-400">{" "}
             Privacy Policy
           </span>
         </p>

@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     title: "Kairos - Keep Streaks",
     description:
         "Kairos is a intuitive dev community that allows you create project, keep streaks, get reviews with a leaderboard feature.",
+        keywords: "kairos, streak, 30 days challenge, #30daysofcide, reddit, vickyjaychallenge"
     metadataBase: new URL("https://kairosapp.vercel.app"),
     openGraph: {
         images: [
