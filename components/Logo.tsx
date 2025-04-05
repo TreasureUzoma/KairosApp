@@ -35,7 +35,7 @@ function Logo() {
             layout="intrinsic"
           />
         )}
-        <p className="text-black text-[22px] font-orbitron md:text-[20px] font-bold dark:text-white tracking-[-1px]">
+        <p className="text-black text-[22px] font-orbitron md:text-[20px] font-bolder dark:text-white">
           Kairos
         </p>
       </section>
