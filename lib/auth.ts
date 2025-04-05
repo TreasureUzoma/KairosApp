@@ -1,6 +1,6 @@
-// src/lib/auth.ts (or adjust path as needed, e.g., lib/auth.ts)
+/* eslint-disable */
 
-import { db } from "@/lib/firebase"; // Ensure this points to your initialized Firestore instance
+import { db } from "@/lib/firebase";
 import type { NextAuthOptions, User as NextAuthUser, Account, Profile } from "next-auth";
 import type { DefaultSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -61,7 +61,6 @@ declare module "next-auth" {
     email: string;
     picture?: string;
     name?: string;
-    // You could potentially add accountRole here if needed frequently
   }
 }
 
@@ -90,14 +89,10 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      // Optional: Request specific scopes or profile details
-      // authorization: { params: { scope: 'openid email profile https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email' } }
     }),
     GitHubProvider({
       clientId: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-       // Optional: Request specific scopes like user:email
-       // authorization: { params: { scope: 'read:user user:email' } }
     }),
   ],
 
