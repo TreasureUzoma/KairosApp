@@ -23,7 +23,6 @@ import { v4 as uuidv4 } from "uuid";
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string;
       email: string;
       image: string;
     } & DefaultSession["user"];
@@ -122,7 +121,6 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user = {
           ...session.user,
-          id: token.id,
           email: token.email || "",
           image: typeof token.picture === "string" ? token.picture : "/default-avatar.png",
           name: token.name || "",
