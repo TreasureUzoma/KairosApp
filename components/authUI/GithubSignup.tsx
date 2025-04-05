@@ -7,7 +7,7 @@ function GithubSignup() {
     <main className="mt-8">
       <Button className="w-full py-6">
         <FaGithub size={20} />
-        <p>Continue with GitHub</p>
+        <p>Continue with Github</p>
       </Button>
     </main>
   );

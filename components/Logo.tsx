@@ -15,7 +15,7 @@ function Logo() {
 
   return (
     <main>
-      <section className="flex justify-center items-center">
+      <section className="flex justify-center items-center space-x-2">
         {theme === "dark" ? (
           <Image
             src="/logo/white-logo.png"
