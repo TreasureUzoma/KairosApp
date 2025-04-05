@@ -15,7 +15,7 @@ function Logo() {
 
   return (
     <main>
-      <section>
+      <section className="flex justify-center items-center">
         {theme === "dark" ? (
           <Image
             src="/logo/1743827430400.png"
@@ -35,6 +35,9 @@ function Logo() {
             layout="intrinsic"
           />
         )}
+        <p className="text-black md:text-[40px] text-[30px] font-bold dark:text-white">
+          Kairos
+        </p>
       </section>
     </main>
   );

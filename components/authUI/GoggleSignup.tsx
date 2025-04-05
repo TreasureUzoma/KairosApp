@@ -5,7 +5,7 @@ function GoggleSignup() {
     <main className="">
       <Button className="w-full py-6 bg-[#6b4fbb]">
         <FaGoogle size={20} />
-        <p>Continou with Google</p>
+        <p>Continue with Google</p>
       </Button>
     </main>
   );
