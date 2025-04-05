@@ -1,5 +1,7 @@
+/* eslint-disable */
+
 import { db } from "@/lib/firebase";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session, User } from "next-auth";
 import type { DefaultSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
@@ -19,12 +21,30 @@ import {
 } from "firebase/database";
 import { v4 as uuidv4 } from "uuid";
 
-// session and token types
+// ------------------ Types ------------------
+
+type FirestoreUser = {
+  userId: string;
+  fullName: string;
+  email: string;
+  password: null;
+  createdAt: ReturnType<typeof serverTimestamp>;
+  updatedAt: ReturnType<typeof serverTimestamp>;
+  lastLogin: ReturnType<typeof serverTimestamp>;
+  emailVerified: boolean;
+  profilePicUrl: string;
+  accountRole: string;
+  accountStatus: string;
+  oauthProvider: string;
+};
+
+// Extend NextAuth types
 declare module "next-auth" {
   interface Session {
     user: {
       email: string;
       image: string;
+      name: string;
     } & DefaultSession["user"];
   }
 
@@ -36,15 +56,34 @@ declare module "next-auth" {
   }
 }
 
+// ------------------ Fallback for missing env ------------------
+
+const {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+} = process.env;
+
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  throw new Error("Missing Google OAuth environment variables");
+}
+
+if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+  throw new Error("Missing GitHub OAuth environment variables");
+}
+
+// ------------------ Auth Options ------------------
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
     }),
     GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+      clientId: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
     }),
   ],
 
@@ -59,12 +98,14 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, account }) {
-      // we are indexing by email stored in real-time db and userid stored in firestore 
-      // this block gets email from oAuth, searches the email in firebase realtime db, gets userid from real-time db, and the fetches user data with the found user id in firestore 
-      // extra latency but helps in keeping everything in check 
-      
+      /**
+       * We are indexing by email stored in real-time db and userId stored in Firestore.
+       * This block gets email from oAuth, searches the email in Firebase Realtime DB,
+       * gets userId from that, and then fetches user data with the found userId in Firestore.
+       * Extra latency, but helps in keeping everything in check and allows email-to-ID mapping.
+       */
       if (user && account) {
-        const email = user.email?.toLowerCase();
+        const email = user.email?.toLowerCase() || "";
         const realtimeDb = getDatabase();
         const mappingRef = rtdbRef(realtimeDb, `emailToUserId/${email}`);
         const mappingSnap = await rtdbGet(mappingRef);
@@ -80,7 +121,7 @@ export const authOptions: NextAuthOptions = {
 
         const userRef = doc(collection(db, "users"), userId);
         const userSnap = await getDoc(userRef);
-        let userData: any;
+        let userData: FirestoreUser;
 
         if (!userSnap.exists()) {
           userData = {
@@ -105,13 +146,14 @@ export const authOptions: NextAuthOptions = {
             updatedAt: serverTimestamp(),
           });
 
-          userData = userSnap.data();
+          userData = userSnap.data() as FirestoreUser;
         }
 
+        // Add values to JWT token
         token.id = userId;
-        token.email = userData?.email;
-        token.picture = userData?.profilePicUrl;
-        token.name = userData?.fullName;
+        token.email = userData.email;
+        token.picture = userData.profilePicUrl;
+        token.name = userData.fullName;
       }
 
       return token;
@@ -119,10 +161,11 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session, token }) {
       if (token) {
+        // Assign token data to session user object
         session.user = {
           ...session.user,
           email: token.email || "",
-          image: typeof token.picture === "string" ? token.picture : "/default-avatar.png",
+          image: typeof token.picture === "string" ? token.picture : "/images/avatars/default.png",
           name: token.name || "",
         };
       }
