@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <main className="min-h-screen flex items-center mx-8 justify-center bg-gray-100">
+    <main className="min-h-screen flex items-center px-8 justify-center bg-gray-100">
       <p className="text-lg text-gray-800">
         Welcome, just testing. Navigate to{" "}
         <Link
