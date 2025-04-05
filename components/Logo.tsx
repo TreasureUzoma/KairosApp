@@ -15,13 +15,13 @@ function Logo() {
 
   return (
     <main>
-      <section className="flex justify-center items-center space-x-2">
+      <section className="flex justify-center items-center space-x-1">
         {theme === "dark" ? (
           <Image
             src="/logo/white-logo.png"
             alt="Logo Dark"
-            width={40}
-            height={40}
+            width={36}
+            height={36}
             className="object-contain"
             layout="intrinsic"
           />
@@ -29,8 +29,8 @@ function Logo() {
           <Image
             src="/logo/black-logo.png"
             alt="Logo Light"
-            width={40}
-            height={40}
+            width={36}
+            height={36}
             className="object-contain"
             layout="intrinsic"
           />

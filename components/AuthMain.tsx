@@ -3,13 +3,13 @@ import GoogleSignup from "@/components/authUI/GoogleSignup";
 
 function AuthMain() {
   return (
-    <main className="flex justify-center h-h-[80vh]">
+    <main className="flex justify-center h-[90vh]">
       <section className="mx-8 my-auto">
         <h1 className="text-black md:text-[40px] text-[30px] font-bold dark:text-white tracking-[-1px]">
           Welcome to Kairos
         </h1>
         <p className="mb-6 text-gray-600 dark:text-gray-300">
-          Sign in below to get started on your journey with us. A new account will be created if uou your account doesn’t exist.
+          Sign in below to get started on your journey with us.
         </p>
         <div className="flex flex-col gap-y-4 mt-[-1rem]">
           <GithubSignup />
