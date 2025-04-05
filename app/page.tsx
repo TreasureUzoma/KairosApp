@@ -1,15 +1,11 @@
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { GithubSignInButton, GoogleSignInButton } from "@/components/AuthButtons";
+import AuthMain from "@/components/AuthMain";
+import SignupNav from "@/components/authUI/SignupNav";
 
 export default function Page() {
   return (
-    <div>
-      <ThemeToggle />
-      <div>
-        <h1>Sign in To Continue</h1>
-        <GithubSignInButton />
-        <GoogleSignInButton/>
-      </div>
-    </div>
+    <>
+      <SignupNav />
+      <AuthMain />
+    </>
   );
 }
