@@ -18,7 +18,7 @@ function Logo() {
       <section className="flex justify-center items-center">
         {theme === "dark" ? (
           <Image
-            src="/logo/1743827430400.png"
+            src="/logo/logo-white.png"
             alt="Logo Dark"
             width={40}
             height={40}
@@ -27,7 +27,7 @@ function Logo() {
           />
         ) : (
           <Image
-            src="/logo/1743827430395.png"
+            src="/logo/logo-black.png"
             alt="Logo Light"
             width={40}
             height={40}
