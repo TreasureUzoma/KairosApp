@@ -20,8 +20,8 @@ function Logo() {
           <Image
             src="/logo/white-logo.png"
             alt="Logo Dark"
-            width={36}
-            height={36}
+            width={29}
+            height={29}
             className="object-contain"
             layout="intrinsic"
           />
@@ -29,13 +29,13 @@ function Logo() {
           <Image
             src="/logo/black-logo.png"
             alt="Logo Light"
-            width={36}
-            height={36}
+            width={29}
+            height={29}
             className="object-contain"
             layout="intrinsic"
           />
         )}
-        <p className="text-black text-[28px] md:text-[35px] font-bold dark:text-white">
+        <p className="text-black text-[22px] font-orbitron md:text-[20px] font-bold dark:text-white tracking-[-1px]">
           Kairos
         </p>
       </section>

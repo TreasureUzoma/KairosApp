@@ -82,6 +82,7 @@
   --font-display: "Satoshi", "sans-serif";
   --breakpoint-3xl: 120rem;
   --font-Geist: "Geist", sans-serif;
+  --font-orbitron: "Orbitron";
   --color-avocado-100: oklch(0.99 0 0);
   --color-avocado-200: oklch(0.98 0.04 113.22);
   --color-avocado-300: oklch(0.94 0.11 115.03);
@@ -134,4 +135,10 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
