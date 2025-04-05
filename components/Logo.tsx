@@ -22,7 +22,7 @@ function Logo() {
             alt="Logo Dark"
             width={40}
             height={40}
-            className="w-6 h-6 sm:w-10 sm:h-10 object-contain"
+            className="object-contain"
             layout="intrinsic"
           />
         ) : (
@@ -31,11 +31,11 @@ function Logo() {
             alt="Logo Light"
             width={40}
             height={40}
-            className="w-12 h-12 sm:w-12 sm:h-12 object-contain"
+            className="object-contain"
             layout="intrinsic"
           />
         )}
-        <p className="text-black md:text-[40px] text-[30px] font-bold dark:text-white">
+        <p className="text-black text-[28px] md:text-[35px] font-bold dark:text-white">
           Kairos
         </p>
       </section>

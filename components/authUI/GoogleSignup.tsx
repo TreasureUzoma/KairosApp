@@ -1,6 +1,6 @@
 import { FaGoogle } from "react-icons/fa";
 import { Button } from "../ui/button";
-function GoggleSignup() {
+function GoogleSignup() {
   return (
     <main className="">
       <Button className="w-full py-6 bg-[#6b4fbb]">
@@ -11,4 +11,4 @@ function GoggleSignup() {
   );
 }
 
-export default GoggleSignup;
+export default GoogleSignup;

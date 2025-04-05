@@ -1,8 +1,22 @@
-"use client";
-
+import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-import { SessionProvider } from "next-auth/react";
 import "./globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Kairos - Keep Streaks",
+  description: "Kairos is a intuitive dev community that allows you create project, keep streaks, get reviews with a leaderboard feature.",
+};
 
 export default function RootLayout({
   children,
@@ -11,12 +25,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <SessionProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
           </ThemeProvider>
-        </SessionProvider>
       </body>
     </html>
   );
