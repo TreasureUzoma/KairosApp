@@ -24,7 +24,7 @@ function AuthMain() {
           <span className="hover:underline text-blue-600 dark:text-blue-400">
             Terms of Service
           </span>
-          and{" "}
+          {" "}and{" "}
           <span className="hover:underline text-blue-600 dark:text-blue-400">{" "}
             Privacy Policy
           </span>
