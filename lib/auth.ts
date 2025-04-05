@@ -1,33 +1,17 @@
-/* eslint-disable */
-
-import { db, rtdb } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
+import type { NextAuthOptions, Session, User } from "next-auth";
+import type { DefaultSession } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import {
   doc,
   getDoc,
   setDoc,
   updateDoc,
-  collection,
-  getDocs,
   serverTimestamp,
-  query,
-  limit,
-  Timestamp,
+  collection,
 } from "firebase/firestore";
-import {
-  ref as rtdbRef,
-  get as rtdbGet,
-  set as rtdbSet,
-} from "firebase/database";
 import { v4 as uuidv4 } from "uuid";
-import type { NextAuthOptions } from "next-auth";
-import type { DefaultSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-
-// --- Helper function to encode email for RTDB key ---
-function encodeEmailForKey(email: string): string {
-  return email.replace(/\./g, ",");
-}
 
 // ------------------ Types ------------------
 
@@ -36,9 +20,9 @@ type FirestoreUser = {
   fullName: string;
   email: string;
   password: null;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-  lastLogin: Timestamp;
+  createdAt: ReturnType<typeof serverTimestamp>;
+  updatedAt: ReturnType<typeof serverTimestamp>;
+  lastLogin: ReturnType<typeof serverTimestamp>;
   emailVerified: boolean;
   profilePicUrl: string;
   accountRole: string;
@@ -50,7 +34,6 @@ type FirestoreUser = {
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string;
       email: string;
       image: string;
       name: string;
@@ -62,8 +45,6 @@ declare module "next-auth" {
     email: string;
     picture?: string;
     name?: string;
-    accountRole?: string;
-    accountStatus?: string;
   }
 }
 
@@ -108,101 +89,62 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account }) {
       if (user && account) {
-        try {
-          const email = user.email?.toLowerCase();
-          if (!email) throw new Error("Email not available from provider.");
+        const email = user.email?.toLowerCase() || "";
+        const userId = uuidv4(); // Directly generate userId if it's not in Firestore
 
-          const encodedEmail = encodeEmailForKey(email);
-          const mappingRef = rtdbRef(rtdb, `emailToUserId/${encodedEmail}`);
-          const mappingSnap = await rtdbGet(mappingRef);
+        const userRef = doc(collection(db, "users"), userId);
+        const userSnap = await getDoc(userRef);
+        let userData: FirestoreUser;
 
-          let userId = "";
-          const usersCollectionRef = collection(db, "users");
-          let userRef: ReturnType<typeof doc>;
-          let userSnap: Awaited<ReturnType<typeof getDoc>>;
-          let userData: FirestoreUser | null = null;
+        if (!userSnap.exists()) {
+          // Create a new user if it doesn't exist
+          userData = {
+            userId,
+            fullName: user.name || "No Name",
+            email,
+            password: null,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            lastLogin: serverTimestamp(),
+            emailVerified: true,
+            profilePicUrl: user.image || "/images/avatars/default.png",
+            accountRole: "oAuth user",
+            accountStatus: "active",
+            oauthProvider: account.provider.toLowerCase(),
+          };
 
-          if (mappingSnap.exists()) {
-            userId = mappingSnap.val();
-            userRef = doc(usersCollectionRef, userId);
-            userSnap = await getDoc(userRef);
+          await setDoc(userRef, userData);
+        } else {
+          // Update last login and timestamp if user exists
+          await updateDoc(userRef, {
+            lastLogin: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          });
 
-            if (userSnap.exists()) {
-              await updateDoc(userRef, {
-                lastLogin: serverTimestamp(),
-                updatedAt: serverTimestamp(),
-                profilePicUrl:
-                  user.image || userSnap.data()?.profilePicUrl || "/images/avatars/default.png",
-                fullName: user.name || userSnap.data()?.fullName || "No Name",
-              });
-
-              const updatedSnap = await getDoc(userRef);
-              userData = updatedSnap.data() as FirestoreUser;
-            } else {
-              console.warn(`RTDB mapping exists for ${email} (ID: ${userId}), but Firestore doc missing. Recreating.`);
-              // Fall through
-            }
-          }
-
-          if (!userData) {
-            if (!mappingSnap.exists()) {
-              userId = uuidv4();
-              await rtdbSet(mappingRef, userId);
-            }
-
-            // Use either new or recovered userId
-            userRef = doc(usersCollectionRef, userId);
-
-            const firstUserQuery = query(usersCollectionRef, limit(1));
-            const firstUserSnap = await getDocs(firstUserQuery);
-            const isFirstUser = firstUserSnap.empty;
-
-            const newUser: FirestoreUser = {
-              userId,
-              fullName: user.name || "No Name",
-              email,
-              password: null,
-              createdAt: serverTimestamp() as Timestamp,
-              updatedAt: serverTimestamp() as Timestamp,
-              lastLogin: serverTimestamp() as Timestamp,
-              emailVerified: profile?.email_verified ?? true,
-              profilePicUrl: user.image || "/images/avatars/default.png",
-              accountRole: isFirstUser ? "admin" : "oAuth user",
-              accountStatus: "active",
-              oauthProvider: account.provider.toLowerCase(),
-            };
-
-            await setDoc(userRef, newUser);
-            userData = newUser;
-          }
-
-          if (userData) {
-            token.id = userData.userId;
-            token.email = userData.email;
-            token.picture = userData.profilePicUrl;
-            token.name = userData.fullName;
-            token.accountRole = userData.accountRole;
-            token.accountStatus = userData.accountStatus;
-          } else {
-            throw new Error("User data could not be determined.");
-          }
-        } catch {
-          console.error("Error in JWT callback:", error);
-          throw new Error(`JWT Callback failed: ${error.message}`);
+          userData = userSnap.data() as FirestoreUser;
         }
+
+        // Assign values to JWT token
+        token.id = userId;
+        token.email = userData.email;
+        token.picture = userData.profilePicUrl;
+        token.name = userData.fullName;
       }
 
       return token;
     },
 
     async session({ session, token }) {
-      if (token && session.user) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-        session.user.image = token.picture || "/images/avatars/default.png";
-        session.user.name = token.name || "";
+      if (token) {
+        // Assign token data to session user object
+        session.user = {
+          ...session.user,
+          email: token.email || "",
+          image: typeof token.picture === "string" ? token.picture : "/images/avatars/default.png",
+          name: token.name || "",
+        };
       }
       return session;
     },
