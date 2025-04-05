@@ -1,16 +1,16 @@
 import { Button } from "../ui/button";
+import { Github } from "lucide-react";
 
-import { FaGithub } from "react-icons/fa";
-
-function GithubSignup() {
-  return (
-    <main className="mt-8">
-      <Button className="w-full py-6">
-        <FaGithub size={20} />
-        <p className="font-bold">Continue with Github</p>
-      </Button>
-    </main>
-  );
+interface GithubSignupProps {
+    onClick: () => void;
+}
+function GithubSignup({ onClick }: GithubSignupProps) {
+    return (
+        <Button onClick={onClick} className="mt-8 w-full py-6">
+            <Github size={20} />
+            <p className="font-bold">Continue with Github</p>
+        </Button>
+    );
 }
 
 export default GithubSignup;
