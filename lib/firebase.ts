@@ -1,8 +1,5 @@
 /* eslint-disable */
 
-import { initializeApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -14,7 +11,13 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
-const db = getFirestore(app);
 
-export { db };
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
+
+// Only initialize once
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+export const db = getFirestore(app);
+export const rtdb = getDatabase(app);

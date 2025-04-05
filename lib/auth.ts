@@ -1,25 +1,25 @@
 /* eslint-disable */
 
-import { db } from "@/lib/firebase";
-import type { NextAuthOptions, Session, User } from "next-auth";
-import type { DefaultSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
+import { db, rtdb } from "@/lib/firebase";
 import {
   doc,
   getDoc,
   setDoc,
   updateDoc,
-  serverTimestamp,
   collection,
+  getDocs,
+  serverTimestamp,
 } from "firebase/firestore";
 import {
-  getDatabase,
   ref as rtdbRef,
   get as rtdbGet,
   set as rtdbSet,
 } from "firebase/database";
 import { v4 as uuidv4 } from "uuid";
+import type { NextAuthOptions } from "next-auth";
+import type { DefaultSession } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 // ------------------ Types ------------------
 
@@ -104,10 +104,10 @@ export const authOptions: NextAuthOptions = {
        * gets userId from that, and then fetches user data with the found userId in Firestore.
        * Extra latency, but helps in keeping everything in check and allows email-to-ID mapping.
        */
+
       if (user && account) {
         const email = user.email?.toLowerCase() || "";
-        const realtimeDb = getDatabase();
-        const mappingRef = rtdbRef(realtimeDb, `emailToUserId/${email}`);
+        const mappingRef = rtdbRef(rtdb, `emailToUserId/${email}`);
         const mappingSnap = await rtdbGet(mappingRef);
 
         let userId: string;
@@ -121,6 +121,11 @@ export const authOptions: NextAuthOptions = {
 
         const userRef = doc(collection(db, "users"), userId);
         const userSnap = await getDoc(userRef);
+
+        // Check if Firestore 'users' collection is empty — if so, this is the first user
+        const allUsersSnap = await getDocs(collection(db, "users"));
+        const isFirstUser = allUsersSnap.empty;
+
         let userData: FirestoreUser;
 
         if (!userSnap.exists()) {
@@ -134,7 +139,7 @@ export const authOptions: NextAuthOptions = {
             lastLogin: serverTimestamp(),
             emailVerified: true,
             profilePicUrl: user.image || "/images/avatars/default.png",
-            accountRole: "oAuth user",
+            accountRole: isFirstUser ? "admin" : "oAuth user",
             accountStatus: "active",
             oauthProvider: account.provider.toLowerCase(),
           };
@@ -165,7 +170,10 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           ...session.user,
           email: token.email || "",
-          image: typeof token.picture === "string" ? token.picture : "/images/avatars/default.png",
+          image:
+            typeof token.picture === "string"
+              ? token.picture
+              : "/images/avatars/default.png",
           name: token.name || "",
         };
       }
