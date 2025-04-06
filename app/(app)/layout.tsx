@@ -1,5 +1,7 @@
 import { AppSidebar } from "@/components/Sidebar";
 import SignupNav from "@/components/authUI/SignupNav";
+import CirclePlus from "@/components/CirclePlus"
+
 export default async function Layout({
   children,
 }: {
@@ -22,6 +24,8 @@ export default async function Layout({
 
           {/* Page Content */}
           <main className="flex-1 p-4 md:p-6 ">{children}</main>
+          
+          <CirclePlus />
         </div>
       </div>
     </>
