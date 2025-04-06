@@ -33,6 +33,13 @@ export async function GET(req: NextRequest): Promise<Response> {
             );
         }
 
+        if (req.auth) {
+            return NextResponse.json(
+                { message: "Not authenticated" },
+                { status: 401 }
+            );
+        }
+
         const email = session.user.email; // Get email from session
 
         // Fetch user data from Firestore
