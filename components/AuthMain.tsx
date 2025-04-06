@@ -13,7 +13,7 @@ function AuthMain() {
           Welcome to Kairos
         </h1>
         <p className="mb-6 text-gray-600 dark:text-gray-300">
-          Sign in below to get started on your journey with us.
+          Sign in below to our <i>streak</i> challenge. Don’t have an account yet? No problem! We’ll create one for you during sign-in.
         </p>
         <div className="flex flex-col gap-y-4 mt-[-1rem]">
           <GithubSignup onClick={() => signIn("github", { callbackUrl: "/" })} />
