@@ -1,5 +1,5 @@
 import AuthMain from "@/components/AuthMain";
-import SignupNav from "@/components/authUI/SignupNav";
+import TopNav from "@/components/authUI/TopNav";
 
 export const metadata = {
   title: "Authentication - Continue to Kairos",
@@ -9,7 +9,7 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <SignupNav />
+      <TopNav />
       <AuthMain />
     </>
   );

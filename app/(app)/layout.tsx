@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/Sidebar";
-import SignupNav from "@/components/authUI/SignupNav";
+import TopNav from "@/components/authUI/TopNav";
 import CirclePlus from "@/components/CirclePlus"
 
 export default async function Layout({
@@ -19,7 +19,7 @@ export default async function Layout({
         <div className="flex-1  flex flex-col min-h-screen">
           {/* Top Navbar */}
           <div className=" sticky top-0 z-40 ">
-            <SignupNav />
+            <TopNav />
           </div>
 
           {/* Page Content */}
