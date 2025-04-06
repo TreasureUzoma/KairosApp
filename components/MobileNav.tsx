@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Home, Trophy, User } from "lucide-react";
+import { Home, Trophy, Bolt, User } from "lucide-react";
 import Link from "next/link";
 
 function MobileNav() {
@@ -13,6 +13,11 @@ function MobileNav() {
       icon: Home,
       href: "/",
     },
+    {
+        title: "My Streaks",
+        icon: Bolt,
+        href: "/streaks"
+    },    
     {
       title: "Leaderboard",
       icon: Trophy,

@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Trophy, User, Plus } from "lucide-react";
+import { Home, Trophy, User, Plus,  Bolt } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 import Image from "next/image";
@@ -14,6 +14,11 @@ const navigationItems = [
         href: "/"
     },
     {
+        title: "My Streaks",
+        icon: Bolt,
+        href: "/streaks"
+    },
+    {
         title: "Leaderboard",
         icon: Trophy,
         href: "/leaderboard"
@@ -22,7 +27,7 @@ const navigationItems = [
         title: "Create Project",
         icon: Plus,
         href: "/new"
-    }
+    },
     {
         title: "Profile",
         icon: User,
