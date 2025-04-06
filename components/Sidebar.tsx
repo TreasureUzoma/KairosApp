@@ -42,7 +42,6 @@ export function AppSidebar() {
   return (
     <>
       <aside className=" hidden md:flex h-screen w-64 flex-col border-r bg-white dark:bg-[#030712] border-gray-200 dark:border-neutral-800">
-        {/* Header */}
         <div className="flex items-center justify-center py-5 border-b border-gray-200 dark:border-neutral-800">
           <Logo />
         </div>
