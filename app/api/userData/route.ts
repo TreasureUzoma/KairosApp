@@ -8,7 +8,6 @@ import {
     getDocs
 } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { auth } from "@/lib/auth";
 
 // Type for the user data stored in Firestore
@@ -24,20 +23,13 @@ interface UserData {
 export async function GET(req: NextRequest): Promise<Response> {
     try {
         // Get the session from NextAuth
-        const session = await getServerSession(authOptions);
+        const session = await auth();
 
         // Check if session exists (i.e., the user is authenticated)
         if (!session || !session.user || !session.user.email) {
-            return NextResponse(
+            return new NextResponse(
                 JSON.stringify({ error: "User is not authenticated" }),
                 { status: 401, headers: { "Content-Type": "application/json" } }
-            );
-        }
-
-        if (!req.auth) {
-            return NextResponse.json(
-                { error: "Not authenticated" },
-                { status: 401 }
             );
         }
 
