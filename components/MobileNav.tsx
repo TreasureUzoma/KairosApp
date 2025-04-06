@@ -45,7 +45,7 @@ function MobileNav() {
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className="h-6 w-6" />
               <span className="mt-1 text-xs">{item.title}</span>
             </Link>
           );
