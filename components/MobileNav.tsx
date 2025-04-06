@@ -37,7 +37,7 @@ function MobileNav() {
   ];
   return (
     <div className="fixed bottom-0 left-0 z-0 w-full border-t bg-background md:hidden">
-      <div className="mx-auto flex h-16 max-w-md items-center justify-around px-6">
+      <div className="mx-auto flex h-16 max-w-md items-center justify-around px-4">
         {navigationItems.map((item) => (
           <Link
             key={item.title}
