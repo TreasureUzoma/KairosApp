@@ -11,7 +11,7 @@ const navigationItems = [
     {
         title: "Home",
         icon: Home,
-        href: "/home"
+        href: "/"
     },
     {
         title: "Leaderboard",
