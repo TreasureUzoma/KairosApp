@@ -1,11 +1,12 @@
 import { ThemeToggle } from "@/components/ThemeToggle";
-import Logo from "@/components/Logo";
-import Link from "next/link"
+
+import Link from "next/link";
+import Logo from "../Logo";
 
 function SignupNav() {
   return (
     <main>
-      <nav className="flex justify-between items-center px-4 py-4 md:px-12 top-0 max-w-screen sticky border-b border-neutral-200 dark:border-neutral-900">
+      <nav className="flex justify-between px-4 items-center  py-[1.03rem] md:px-12 top-0 max-w-screen sticky border-b border-neutral-200 dark:border-neutral-900">
         <Link href="/">
           <Logo />
         </Link>
