@@ -39,13 +39,13 @@ function MobileNav() {
             <Link
               key={item.title}
               href={item.href}
-              className={`flex flex-col items-center justify-center ${
+              className={`flex flex-col items-center justify-center font-semibold ${
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <item.icon className="h-6 w-6" />
+              <item.icon className="h-5 w-5" />
               <span className="mt-1 text-xs">{item.title}</span>
             </Link>
           );
