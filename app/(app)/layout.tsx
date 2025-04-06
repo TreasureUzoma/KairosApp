@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/Sidebar";
-import TopNav from "@/components/authUI/TopNav";
+import TopNav from "@/components/TopNav";
 import CirclePlus from "@/components/CirclePlus"
 
 export default async function Layout({

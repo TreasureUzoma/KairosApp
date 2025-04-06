@@ -8,7 +8,7 @@ const CreateAccountButton = () => {
     // returns nothing since user is already logged in
 
     return (
-        <Link className="border border-black rounded-sm bg-white text-black dark:border-white bg-black text-black hover: opacity-90" href="/auth">Create account </Link>
+        <Link className="px-3 py-2 border border-black rounded-sm bg-white text-black dark:border-white bg-black text-black hover: opacity-90" href="/auth">Create account </Link>
     );
 };
 export default CreateAccountButton;

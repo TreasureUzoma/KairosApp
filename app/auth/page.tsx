@@ -1,5 +1,5 @@
 import AuthMain from "@/components/AuthMain";
-import TopNav from "@/components/authUI/TopNav";
+import TopNav from "@/components/TopNav";
 
 export const metadata = {
   title: "Authentication - Continue to Kairos",
