@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 
-const CreateAccountButton = () => {
+export default async function CreateAccountButton = () => {
     const session = await auth();
 
     if (session?.user) return null;
