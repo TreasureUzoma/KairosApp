@@ -9,7 +9,7 @@ export default async function CreateAccountButton() {
 
     return (
         <Link
-            className="px-3 py-2 border border-black rounded-sm bg-white text-black dark:border-white bg-black text-black hover: opacity-90"
+            className="px-3 py-2 rounded-sm text-sm font-medium bg-black text-white dark:bg-white dark:text-black hover: opacity-90"
             href="/auth"
         >
             Create account
