@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/Sidebar";
 import TopNav from "@/components/TopNav";
-import CirclePlus from "@/components/CirclePlus"
+import CirclePlus from "@/components/CirclePlus";
 
 export default async function Layout({
   children,
@@ -16,15 +16,14 @@ export default async function Layout({
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1  flex flex-col min-h-screen">
+        <div className="flex-1  md:pl-64   flex-col ">
           {/* Top Navbar */}
           <div className=" sticky top-0 z-40 ">
             <TopNav />
           </div>
 
           {/* Page Content */}
-          <main className="flex-1 p-4 md:p-6 ">{children}</main>
-          
+          <main className="flex-1 mb-20">{children}</main>
           <CirclePlus />
         </div>
       </div>
