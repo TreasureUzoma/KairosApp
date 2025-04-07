@@ -1,5 +1,5 @@
 import React from "react";
-import { MoreHorizontal } from "lucide-react";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
 import Image from "next/image";
 
 const Home = () => {
@@ -8,7 +8,7 @@ const Home = () => {
       {[1, 2, 3, 4].map((num) => (
         <div
           key={num}
-          className="border-b border-neutral-200 p-4 mb-9 dark:border-neutral-900 px- cursor-pointer"
+          className="border-b border-neutral-200 p-4 mb-9 dark:border-neutral-900 cursor-pointer"
         >
           <div className="flex">
             {/* Profile Picture */}
@@ -26,9 +26,8 @@ const Home = () => {
               {/* User Info */}
               <div className="flex items-center">
                 <span className="font-bold mr-1">User Name</span>
-                {/* <span className="text-gray-500 mr-1">@username</span> */}
                 <span className="text-gray-500">· 2h ago</span>
-                <MoreHorizontal className="h-4 w-4 ml-auto text-gray-500" />
+                {/* <MoreHorizontal className="h-4 w-4 ml-auto text-gray-500" /> */}
               </div>
 
               {/* Post Text */}
@@ -41,13 +40,29 @@ const Home = () => {
               </p>
 
               {/* Optional Tweet Image */}
-              <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-900 aspect-video overflow-hidden">
+              <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-900 aspect-video overflow-hidden mb-3">
                 <Image
                   src="/gabriel-heinzer-g5jpH62pwes-unsplash.jpg"
                   alt="Tweet image"
                   fill
                   className="object-cover"
                 />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between text-sm text-gray-500 font-medium px-1">
+                <button className="flex items-center gap-1 hover:text-red-500 transition">
+                  <Heart className="w-4 h-4" />
+                  Like
+                </button>
+                <button className="flex items-center gap-1 hover:text-blue-500 transition">
+                  <MessageCircle className="w-4 h-4" />
+                  Comment
+                </button>
+                <button className="flex items-center gap-1 hover:text-green-500 transition">
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </button>
               </div>
             </div>
           </div>
