@@ -54,7 +54,7 @@ export async function GET() {
       where("email", "==", email)
     );
     const postsSnapshot = await getDocs(postsQuery);
-    const totalProjects = postsSnapshot.size; // Count the number of posts (projects)
+    const totalProjects = postsSnapshot.size;
 
     // Return data with default values and fetched post count
     const returnData: UserData = {
