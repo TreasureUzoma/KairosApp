@@ -19,7 +19,6 @@ interface UserData {
 export default function KairosProfile() {
   const [activeTab] = useState("posts");
   const [bannerImage, setBannerImage] = useState("/thumbnail.jpg");
-  const [profileImage, setProfileImage] = useState("/guy.jpg");
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +31,6 @@ export default function KairosProfile() {
         const data = await res.json();
         if (res.ok) {
           setUserData(data);
-          setProfileImage(data.profilePicUrl);
         } else {
           console.error("Error fetching user data:", data.error);
         }
@@ -81,7 +79,7 @@ export default function KairosProfile() {
               onClick={handleProfileClick}
             >
               <Image
-                src={profileImage || "/placeholder.svg"}
+                src={userData?.profilePicUrl || "/guy.jpg"}
                 alt="Profile"
                 fill
                 className="object-cover"
@@ -152,7 +150,7 @@ export default function KairosProfile() {
             >
               <div className="flex">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
-                  <Image src={profileImage} alt="Profile" fill className="object-cover" />
+                  <Image src={userData?.profilePicUrl || "/guy.jpg"} alt="Profile" fill className="object-cover" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center">
