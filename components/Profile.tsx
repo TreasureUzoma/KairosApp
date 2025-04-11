@@ -19,7 +19,7 @@ interface UserData {
 export default function KairosProfile() {
   const [activeTab] = useState("posts");
   const [bannerImage, setBannerImage] = useState("/thumbnail.jpg");
-  const [profileImage, setProfileImage] = useState("/thumbnail.jpg");
+  const [profileImage, setProfileImage] = useState("/guy.png");
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
