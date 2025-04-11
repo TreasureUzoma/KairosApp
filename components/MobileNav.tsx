@@ -11,7 +11,7 @@ function MobileNav() {
     {
       title: "Home",
       icon: Home,
-      href: "/",
+      href: "/home",
     },
     {
         title: "My Streaks",
