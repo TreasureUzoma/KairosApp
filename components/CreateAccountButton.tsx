@@ -1,17 +1,12 @@
-/* eslint-disable */
-
-'use client'
-
-import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 
-function CreateAccountButton() {
-  const pathname = usePathname();
-  const { data: session } = useSession();
+export default async function CreateAccountButton() {
+  const session = await auth();
 
-  if (session || pathname === '/auth') return null;
-  // returns nothing if user is already signed in or in auth route
+  if (session?.user) return null;
+  // returns nothing if user is already signed 
+  // TODO: return nothing if in /auth route
 
   return (
     <Link
@@ -22,5 +17,3 @@ function CreateAccountButton() {
     </Link>
   );
 }
-
-export default CreateAccountButton;
