@@ -16,8 +16,8 @@ function AuthMain() {
           Sign in below to our <i>streak</i> challenge. Don’t have an account yet? No problem! We’ll create one for you during sign-in.
         </p>
         <div className="flex flex-col gap-y-4 mt-[-1rem]">
-          <GithubSignup onClick={() => signIn("github", { callbackUrl: "/" })} />
-          <GoogleSignup onClick={() => signIn("google", { callbackUrl: "/" })}/>
+          <GithubSignup onClick={() => signIn("github", { callbackUrl: "/home" })} />
+          <GoogleSignup onClick={() => signIn("google", { callbackUrl: "/home" })}/>
         </div>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-7">
           By continuing, you agree to our{" "}
