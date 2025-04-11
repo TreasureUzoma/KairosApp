@@ -1,80 +1,58 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import {
-  CalendarDays,
-  LinkIcon,
-  MapPin,
-  MessageCircle,
-  Heart,
-  Share2,
-  Camera,
-  Edit,
-  Check,
-  X,
-} from "lucide-react";
+import Link from "next/link";
+import { CalendarDays, LinkIcon, MessageCircle, Heart, Share2, Camera } from "lucide-react";
 
-export default function TwitterProfile() {
+interface UserData {
+  fullName: string;
+  email: string;
+  profilePicUrl: string;
+  totalProjects: number;
+  currentRank: number;
+  currentStreak: number;
+}
+
+export default function KairosProfile() {
   const [activeTab] = useState("posts");
   const [bannerImage, setBannerImage] = useState("/thumbnail.jpg");
-  const [profileImage, setProfileImage] = useState("/guy.jpg");
-  const [bio, setBio] = useState(
-    "Frontend Developer | Building beautiful UIs & clean code 🚀"
-  );
-  const [isEditingBio, setIsEditingBio] = useState(false);
-  const [editedBio, setEditedBio] = useState(bio);
+  const [profileImage, setProfileImage] = useState("/thumbnail.jpg");
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const profileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleBannerClick = () => {
-    bannerInputRef.current?.click();
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const res = await fetch("/api/profile");
+        const data = await res.json();
+        if (res.ok) {
+          setProfileImage(data.profilePicUrl);
+        } else {
+          console.error("Error fetching user data:", data.error);
+        }
+      } catch (err) {
+        console.error("Fetch failed:", err);
+      }
+    };
 
-  const handleProfileClick = () => {
-    profileInputRef.current?.click();
-  };
+    fetchUserData();
+  }, []);
 
-  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setBannerImage(imageUrl);
-    }
-  };
+  const handleBannerClick = () => bannerInputRef.current?.click();
+  const handleProfileClick = () => profileInputRef.current?.click();
 
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-    }
-  };
-
-  const handleEditBio = () => {
-    setIsEditingBio(true);
-    setEditedBio(bio);
-  };
-
-  const handleSaveBio = () => {
-    setBio(editedBio);
-    setIsEditingBio(false);
-  };
-
-  const handleCancelEditBio = () => {
-    setIsEditingBio(false);
-  };
+  const handleBannerChange = () => {};
+  const handleProfileChange = () => {};
 
   return (
     <div className="bg-background border-gray-200 dark:border-neutral-800 text-black dark:text-white">
       {/* Banner */}
-      <div
-        className="relative h-48 bg-blue-500 cursor-pointer group"
-        onClick={handleBannerClick}
-      >
+      <div className="relative h-35 md:h-48 bg-blue-500 cursor-pointer group" onClick={handleBannerClick}>
         <Image
-          src={bannerImage || "/placeholder.svg"}
+          src={bannerImage || "/guy.png"}
           alt="Profile Banner"
           fill
           className="object-cover"
@@ -96,7 +74,7 @@ export default function TwitterProfile() {
         <div className="flex justify-between -mt-12">
           <div className="relative">
             <div
-              className="relative w-44 h-44 rounded-full overflow-hidden mr-1 cursor-pointer group"
+              className="relative w-32 md:w-44 h-32 md:h-44 rounded-full overflow-hidden mr-1 cursor-pointer group"
               onClick={handleProfileClick}
             >
               <Image
@@ -121,63 +99,28 @@ export default function TwitterProfile() {
 
         {/* Name and Username */}
         <div className="mt-2">
-          <h1 className="text-xl font-bold">Leowave</h1>
-          <p className="text-gray-500">@leo_wave</p>
+          <h1 className="text-xl font-bold">{userData?.fullName || "Not Active"}</h1>
+          <p className="text-gray-500">@{userData?.email?.split("@")[0] || "null"}</p>
         </div>
 
         {/* Bio */}
         <div className="mt-3 relative">
-          {isEditingBio ? (
-            <div className="flex flex-col gap-2">
-              <textarea
-                value={editedBio}
-                onChange={(e) => setEditedBio(e.target.value)}
-                className="w-full p-2 border rounded-md bg-white dark:bg-gray-800 text-black dark:text-white"
-                rows={3}
-                maxLength={160}
-              />
-              <div className="flex gap-2">
-                <button
-                  onClick={handleSaveBio}
-                  className="flex items-center gap-1 px-3 py-1 bg-green-500 text-white rounded-full hover:bg-green-600"
-                >
-                  <Check size={16} />
-                  Save
-                </button>
-                <button
-                  onClick={handleCancelEditBio}
-                  className="flex items-center gap-1 px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-                >
-                  <X size={16} />
-                  Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-start gap-2">
-              <p className="text-gray-800 dark:text-gray-200 flex-grow">
-                {bio}
-              </p>
-              <button
-                onClick={handleEditBio}
-                className="text-gray-500 hover:text-blue-500"
-              >
-                <Edit size={16} />
-              </button>
-            </div>
-          )}
+          <div className="flex items-start gap-2">
+            <p className="text-gray-800 dark:text-gray-200 flex-grow">
+              Ranked{" "}
+              <Link href={`/#leaderboard${userData?.currentRank}`}>
+                #{userData?.currentRank ?? 0}
+              </Link>
+            </p>
+          </div>
         </div>
 
         {/* Location, Website, Join Date */}
         <div className="mt-3 flex flex-wrap gap-x-4 text-gray-500 text-sm">
           <div className="flex items-center gap-1">
-            <MapPin size={16} />
-            <span>San Francisco, CA</span>
-          </div>
-          <div className="flex items-center gap-1">
             <LinkIcon size={16} />
-            <a href="#" className="text-blue-500 hover:underline">
-              leowave.dev
+            <a href="#" rel="noreferrer" target="_blank" className="text-blue-500 hover:underline">
+              domain.dev
             </a>
           </div>
           <div className="flex items-center gap-1">
@@ -189,7 +132,7 @@ export default function TwitterProfile() {
 
       {/* Tabs */}
       <div className="mt-4">
-        <div className="">
+        <div>
           <button className="px-4 py-3 text-sm font-medium text-center text-black dark:text-white border-b-2">
             Posts
           </button>
@@ -197,61 +140,42 @@ export default function TwitterProfile() {
       </div>
 
       {/* Posts */}
-      <div className="">
+      <div>
         {activeTab === "posts" &&
-          [1, 2, 3, 4].map((num) => (
+          [1, 2, 3, 4].map(num => (
             <div
               key={num}
               className="border-b border-neutral-200 p-4 mb-9 dark:border-neutral-900 cursor-pointer"
             >
               <div className="flex">
-                {/* Profile Picture */}
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
-                  <Image
-                    src="/guy.jpg"
-                    alt="Profile"
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={profileImage} alt="Profile" fill className="object-cover" />
                 </div>
-
-                {/* Post Content */}
                 <div className="flex-1">
                   <div className="flex items-center">
-                    <span className="font-bold mr-1">User Name</span>
+                    <span className="font-bold mr-1">{userData?.fullName || "User Name"}</span>
                     <span className="text-gray-500">· 2h ago</span>
                   </div>
-
                   <p className="mt-3 text-[14px] mb-6 font-Geist">
-                    Karos team just testing UI. Lorem ipsum dolor sit amet
-                    consectetur, adipisicing elit. Velit voluptatem ullam nam
-                    blanditiis sit commodi ex sequi tempore quaerat at
-                    cupiditate enim beatae ipsum, praesentium aut maiores
-                    reprehenderit vero molestias totam iusto. Nam, ut.
+                    Karos team just testing UI. Lorem ipsum dolor sit amet consectetur...
                   </p>
-
                   <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-900 aspect-video overflow-hidden mb-3">
                     <Image
                       src="/gabriel-heinzer-g5jpH62pwes-unsplash.jpg"
-                      alt="Tweet image"
+                      alt="Post image"
                       fill
                       className="object-cover"
                     />
                   </div>
-
-                  {/* Action Buttons */}
                   <div className="flex justify-between text-sm text-gray-500 font-medium px-1">
                     <button className="flex items-center gap-1 hover:text-red-500 transition">
-                      <Heart className="w-4 h-4" />
-                      Like
+                      <Heart className="w-4 h-4" /> Like
                     </button>
                     <button className="flex items-center gap-1 hover:text-blue-500 transition">
-                      <MessageCircle className="w-4 h-4" />
-                      Comment
+                      <MessageCircle className="w-4 h-4" /> Comment
                     </button>
                     <button className="flex items-center gap-1 hover:text-green-500 transition">
-                      <Share2 className="w-4 h-4" />
-                      Share
+                      <Share2 className="w-4 h-4" /> Share
                     </button>
                   </div>
                 </div>
