@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -8,7 +8,7 @@ export default function CreateAccountButton() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  if (session?.user || pathname == "/auth") return null;
+  if (session?.user || pathname === '/auth') return null;
   // returns nothing if user is already signed in or in auth route
 
   return (
