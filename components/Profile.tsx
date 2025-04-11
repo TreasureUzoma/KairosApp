@@ -19,7 +19,7 @@ interface UserData {
 export default function KairosProfile() {
   const [activeTab] = useState("posts");
   const [bannerImage, setBannerImage] = useState("/thumbnail.jpg");
-  const [profileImage, setProfileImage] = useState("/guy.png");
+  const [profileImage, setProfileImage] = useState("/guy.jpg");
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +32,7 @@ export default function KairosProfile() {
         const data = await res.json();
         if (res.ok) {
           setUserData(data);
-          setProfileImage(data.profilePicUrl || "/thumbnail.jpg");
+          setProfileImage(data.profilePicUrl);
         } else {
           console.error("Error fetching user data:", data.error);
         }
