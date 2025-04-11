@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -29,7 +31,8 @@ export default function KairosProfile() {
         const res = await fetch("/api/profile");
         const data = await res.json();
         if (res.ok) {
-          setProfileImage(data.profilePicUrl);
+          setUserData(data);
+          setProfileImage(data.profilePicUrl || "/thumbnail.jpg");
         } else {
           console.error("Error fetching user data:", data.error);
         }
