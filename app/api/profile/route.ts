@@ -60,7 +60,7 @@ export async function GET() {
     const returnData: UserData = {
       fullName: userData.fullName || "Unknown",
       email: email,
-      profilePicUrl: userData.profilePicUrl || "",
+      profilePicUrl: userData.profilePicUrl,
       totalProjects: totalProjects,
       currentRank: userData.currentRank || 0,
       currentStreak: userData.currentStreak || 0,
