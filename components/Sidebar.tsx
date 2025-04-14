@@ -2,10 +2,11 @@
 
 import { Home, Trophy, User, Plus, Bolt } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Logo from "./Logo";
+
 import Image from "next/image";
 import MobileNav from "./MobileNav";
 import Link from "next/link";
+import Img from "./Img";
 
 const navigationItems = [
   {
@@ -41,8 +42,12 @@ export function AppSidebar() {
   return (
     <>
       <aside className="hidden md:flex h-screen w-64 flex-col border-r  bg-background border-gray-200 dark:border-neutral-800">
-        <div className="flex items-center justify-center py-5 border-b border-gray-200 dark:border-neutral-800">
-          <Logo />
+        <div className="flex items-center justify-start px-4 py-5 border-b border-gray-200 dark:border-neutral-800">
+          <Img
+            src={"/logo.svg"}
+            className="h-7.5 w-fit dark:invert"
+            alt="logo"
+          />
         </div>
 
         {/* Navigation */}
