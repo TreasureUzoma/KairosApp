@@ -6,10 +6,14 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { FaImage } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { MdCancel } from "react-icons/md";
-import TextareaAutosize from "react-textarea-autosize";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 type FormData = {
+  title: string;
+  description: string;
+  project: string;
+  github: string;
   imagesUrl: string[];
   imageFiles: File[] | null;
 };
@@ -18,21 +22,26 @@ export default function CreateStreakForm() {
   const [formData, setFormData] = useState<FormData>({
     imagesUrl: [],
     imageFiles: null,
+    title: "",
+    github: "",
+    project: "",
+    description: "",
   });
-  const [text, setText] = useState("");
 
   const router = useRouter();
 
   const goBack = () => router.back();
 
-  const { imagesUrl, imageFiles } = formData;
+  const { imagesUrl, imageFiles, title, project, description, github } =
+    formData;
 
-  const isDisabled = !text.trim() && imagesUrl.length < 1;
+  const isDisabled =
+    (!title || !description || !github || !project) && imagesUrl.length < 1;
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
   ) => {
-    const { value, files } = e.target;
+    const { value, files, name } = e.target;
     const maxFileSize = 2.5 * 1024 * 1024;
 
     if (files && files.length) {
@@ -57,7 +66,10 @@ export default function CreateStreakForm() {
         }));
       }
     } else {
-      setText(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
@@ -77,6 +89,20 @@ export default function CreateStreakForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
+    const fields = ["title", "project", "description", "github"];
+
+    const isEmptyStrings = fields.some(
+      (field) =>
+        !formData[
+          field as keyof Omit<FormData, "imageFiles" | "imagesUrl">
+        ].trim()
+    );
+
+    if (isEmptyStrings) {
+      console.log("Empty fields");
+      return;
+    }
+
     // handle submit
   }
 
@@ -91,23 +117,52 @@ export default function CreateStreakForm() {
           <ImCancelCircle onClick={goBack} cursor={"pointer"} fill="red" />
         </div>
         <div className="flex items-start gap-3">
-          <Img src={"/guy.jpg"} className="size-10 rounded-full" alt="user" />
+          <Img
+            src={"/guy.jpg"}
+            className="size-10 shrink-0 object-cover rounded-full"
+            alt="user"
+          />
           <div className="grid h-fit w-full gap-5">
             <h2 className="text-primary text-sm font-semibold">DevText16</h2>
-            <TextareaAutosize
-              onChange={handleChange}
-              name="text"
-              value={text}
-              className="border-gray focus:border-accent resize-none text-gray border-b outline-none"
-              placeholder="What's trending?"
-              minRows={2}
-              maxRows={7}
-            />
+            <div className="grid gap-5 md:w-[calc(100%-200px)] w-full ">
+              <input
+                className="px-3 py-2 border outline-none rounded-[10px] focus:border-zinc-500"
+                name="title"
+                onChange={handleChange}
+                type="text"
+                value={title}
+                placeholder="Enter Streak title"
+              />
+              <input
+                className="px-3 py-2 border outline-none rounded-[10px] focus:border-zinc-500"
+                name="github"
+                onChange={handleChange}
+                type="url"
+                value={github}
+                placeholder="Enter GitHub repo"
+              />
+              <input
+                className="px-3 py-2 border outline-none rounded-[10px] focus:border-zinc-500"
+                name="project"
+                onChange={handleChange}
+                type="url"
+                value={project}
+                placeholder="Enter project url"
+              />
+              <textarea
+                onChange={handleChange}
+                name="description"
+                value={description}
+                rows={5}
+                className="focus:border-zinc-500 p-3 rounded-[10px] resize-none text-gray border outline-none"
+                placeholder="Brief description"
+              />
+            </div>
           </div>
         </div>
 
         {imagesUrl.length > 0 && (
-          <div className="no-scrollbar flex h-[250px] gap-5 overflow-x-scroll py-5">
+          <div className="no-scrollbar px-10 flex h-[250px] gap-5 overflow-x-scroll py-5">
             {imagesUrl.map((image, index) => (
               <picture
                 key={index}
@@ -145,7 +200,7 @@ export default function CreateStreakForm() {
             <FaImage className="fill-gray group-hover:fill-zinc-950 size-5 cursor-pointer" />
           </label>
 
-          <button
+          <Button
             type="submit"
             disabled={isDisabled}
             className={cn(
@@ -154,7 +209,7 @@ export default function CreateStreakForm() {
             )}
           >
             Post
-          </button>
+          </Button>
         </div>
       </form>
     </div>
