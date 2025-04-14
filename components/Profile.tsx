@@ -1,46 +1,53 @@
-/* eslint-disable */
-
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { CalendarDays, LinkIcon, MessageCircle, Heart, Share2, Camera } from "lucide-react";
+import {
+  CalendarDays,
+  LinkIcon,
+  MessageCircle,
+  Heart,
+  Share2,
+  Camera,
+} from "lucide-react";
+import axios from "axios";
+// import useSWR from "swr";
+import Image from "next/image";
 
-interface UserData {
-  fullName: string;
-  email: string;
-  profilePicUrl: string;
-  totalProjects: number;
-  currentRank: number;
-  currentStreak: number;
-}
+// const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+// type APIResponse = {
+//   success: boolean;
+//   data: IUserData;
+// };
 
 export default function KairosProfile() {
   const [activeTab] = useState("posts");
   const [bannerImage, setBannerImage] = useState("/thumbnail.jpg");
-  const [userData, setUserData] = useState<UserData | null>(null);
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const profileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await fetch("/api/profile");
-        const data = await res.json();
-        if (res.ok) {
-          setUserData(data);
-        } else {
-          console.error("Error fetching user data:", data.error);
-        }
-      } catch (err) {
-        console.error("Fetch failed:", err);
-      }
-    };
+  // const { data, isLoading, error } = useSWR<APIResponse>(
+  //   "/api/profile",
+  //   fetcher,
+  //   {
+  //     revalidateOnReconnect: false,
+  //     revalidateIfStale: false,
+  //     revalidateOnFocus: false,
+  //     revalidateOnMount: false,
+  //   }
+  // );
 
-    fetchUserData();
-  }, []);
+  // if (error) {
+  //   console.log(error);
+
+  //   console.log(error);
+  // }
+
+  // if (isLoading) {
+  //   return <p>loading...</p>;
+  // }
 
   const handleBannerClick = () => bannerInputRef.current?.click();
   const handleProfileClick = () => profileInputRef.current?.click();
@@ -48,14 +55,26 @@ export default function KairosProfile() {
   const handleBannerChange = () => {};
   const handleProfileChange = () => {};
 
+  const userData: IUserData = {
+    fullName: "",
+    email: "",
+    profilePicUrl: "",
+    totalProjects: 0,
+    currentRank: 0,
+    currentStreak: 0,
+  };
+
   return (
     <div className="bg-background border-gray-200 dark:border-neutral-800 text-black dark:text-white">
       {/* Banner */}
-      <div className="relative h-35 md:h-48 bg-blue-500 cursor-pointer group" onClick={handleBannerClick}>
+      <div
+        className="relative h-35 md:h-48 bg-blue-500 cursor-pointer group"
+        onClick={handleBannerClick}
+      >
         <Image
+          fill
           src={bannerImage || "/guy.png"}
           alt="Profile Banner"
-          fill
           className="object-cover"
         />
         <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -79,9 +98,9 @@ export default function KairosProfile() {
               onClick={handleProfileClick}
             >
               <Image
+                fill
                 src={userData?.profilePicUrl || "/guy.jpg"}
                 alt="Profile"
-                fill
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -100,8 +119,12 @@ export default function KairosProfile() {
 
         {/* Name and Username */}
         <div className="mt-2">
-          <h1 className="text-xl font-bold">{userData?.fullName || "Not Active"}</h1>
-          <p className="text-gray-500">@{userData?.email?.split("@")[0] || "null"}</p>
+          <h1 className="text-xl font-bold">
+            {userData?.fullName || "Not Active"}
+          </h1>
+          <p className="text-gray-500">
+            @{userData?.email?.split("@")[0] || "null"}
+          </p>
         </div>
 
         {/* Bio */}
@@ -120,7 +143,12 @@ export default function KairosProfile() {
         <div className="mt-3 flex flex-wrap gap-x-4 text-gray-500 text-sm">
           <div className="flex items-center gap-1">
             <LinkIcon size={16} />
-            <a href="#" rel="noreferrer" target="_blank" className="text-blue-500 hover:underline">
+            <a
+              href="#"
+              rel="noreferrer"
+              target="_blank"
+              className="text-blue-500 hover:underline"
+            >
               domain.dev
             </a>
           </div>
@@ -143,28 +171,36 @@ export default function KairosProfile() {
       {/* Posts */}
       <div>
         {activeTab === "posts" &&
-          [1, 2, 3, 4].map(num => (
+          [Array(3)].map((_, index) => (
             <div
-              key={num}
+              key={index}
               className="border-b border-neutral-200 p-4 mb-9 dark:border-neutral-900 cursor-pointer"
             >
               <div className="flex">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
-                  <Image src={userData?.profilePicUrl || "/guy.jpg"} alt="Profile" fill className="object-cover" />
+                  <Image
+                    fill
+                    src={userData?.profilePicUrl || "/guy.jpg"}
+                    alt="Profile"
+                    className="object-cover"
+                  />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center">
-                    <span className="font-bold mr-1">{userData?.fullName || "User Name"}</span>
+                    <span className="font-bold mr-1">
+                      {userData?.fullName || "User Name"}
+                    </span>
                     <span className="text-gray-500">· 2h ago</span>
                   </div>
                   <p className="mt-3 text-[14px] mb-6 font-Geist">
-                    Karos team just testing UI. Lorem ipsum dolor sit amet consectetur...
+                    Karos team just testing UI. Lorem ipsum dolor sit amet
+                    consectetur...
                   </p>
                   <div className="relative rounded-2xl border border-neutral-200 dark:border-neutral-900 aspect-video overflow-hidden mb-3">
                     <Image
+                      fill
                       src="/gabriel-heinzer-g5jpH62pwes-unsplash.jpg"
                       alt="Post image"
-                      fill
                       className="object-cover"
                     />
                   </div>
