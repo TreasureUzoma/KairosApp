@@ -84,7 +84,7 @@ export default function CreateStreakForm() {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="xsm:h-fit xsm:w-[500px] xsm:max-h-[calc(100%_-_50px)] flex h-full min-h-[300px] w-full flex-col gap-6 rounded-[10px] bg-white p-5"
+        className="xsm:h-fit xsm:w-[500px] xsm:max-h-[calc(100%_-_50px)] flex h-full min-h-[300px] w-full flex-col gap-6 rounded-[10px]  bg-background p-5"
       >
         <div className="mb-3 flex justify-between">
           <h2 className="text-primary font-semibold">Create New Streak</h2>
@@ -149,7 +149,7 @@ export default function CreateStreakForm() {
             type="submit"
             disabled={isDisabled}
             className={cn(
-              "bg-primary h-fit rounded-full p-2 px-5 text-white",
+              "bg-primary h-fit rounded-full p-2 dark:text-zinc-800 px-5 text-white",
               isDisabled && "bg-primary/50 cursor-not-allowed"
             )}
           >

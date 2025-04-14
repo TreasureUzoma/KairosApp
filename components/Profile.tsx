@@ -10,7 +10,7 @@ import {
   Share2,
   Camera,
 } from "lucide-react";
-import axios from "axios";
+// import axios from "axios";
 // import useSWR from "swr";
 import Image from "next/image";
 
@@ -23,7 +23,7 @@ import Image from "next/image";
 
 export default function KairosProfile() {
   const [activeTab] = useState("posts");
-  const [bannerImage, setBannerImage] = useState("/thumbnail.jpg");
+  // const [bannerImage, setBannerImage] = useState("");
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const profileInputRef = useRef<HTMLInputElement>(null);
@@ -73,7 +73,7 @@ export default function KairosProfile() {
       >
         <Image
           fill
-          src={bannerImage || "/guy.png"}
+          src={"/thumbnail.jpg"}
           alt="Profile Banner"
           className="object-cover"
         />
