@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 "use client";
 // import type { Metadata } from "next";
 import { useParams } from "next/navigation";
