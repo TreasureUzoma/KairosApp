@@ -1,10 +1,5 @@
-import Home from "@/components/Home";
-// import Link from "next/link";
+import Home from "@/app/(app)/home/_components/Home";
 
 export default function Page() {
-  return (
-    <>
-      <Home />
-    </>
-  );
+  return <Home />;
 }

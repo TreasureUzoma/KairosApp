@@ -18,6 +18,8 @@ type FormData = {
   imageFiles: File[] | null;
 };
 
+
+
 export default function CreateStreakForm() {
   const [formData, setFormData] = useState<FormData>({
     imagesUrl: [],

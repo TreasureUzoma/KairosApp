@@ -1,5 +1,6 @@
-// import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 
+import { posts } from "@/app/dummy";
 import StreakApp from "./_components/StreakApp";
 
 type Params = {
@@ -7,16 +8,13 @@ type Params = {
 };
 
 export default async function DynamicStreakPage({ params }: Params) {
-    const id = (await params).id
+  const id = (await params).id;
 
-    console.log(id);
-    
+  const findStreak = posts.find((post) => post.id === id);
 
-    // TODO: check if strak exists in db, else: 
-    // if (!streakWithId){
-    //     return notFound()
-    // }
+  if (!findStreak) {
+    return notFound();
+  }
 
-    return <StreakApp />
-
+  return <StreakApp streak={findStreak} />;
 }

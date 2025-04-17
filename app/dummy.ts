@@ -1,0 +1,137 @@
+export const posts = [
+  {
+    id: "Xp7BsQ23lA9Dfh2jvK1z",
+    title: "My Awesome Project",
+    description: "This is a description of the project where cool things happen!",
+    project: "https://example.com/my-awesome-project",
+    github: "https://github.com/username/my-awesome-project",
+    images: [
+      "https://example.com/image1.jpg",
+      "https://example.com/image2.jpg",
+    ],
+    streakCount: 5,
+    likes: 150,
+    commentsCount: 2,
+    user: {
+      fullName: "Jane Doe",
+      email: "jane.doe@example.com",
+      profilePicUrl: "https://example.com/profile/jane.jpg",
+      totalProjects: 12,
+      currentRank: 3,
+      currentStreak: 5,
+    },
+  },
+  {
+    id: "Jt5NkR89sW0MfP4LgVzQ",
+    title: "Another Cool Project",
+    description: "Exploring the depths of artificial intelligence and machine learning!",
+    project: "https://example.com/another-cool-project",
+    github: "https://github.com/username/another-cool-project",
+    images: [
+      "https://example.com/image3.jpg",
+      "https://example.com/image4.jpg",
+    ],
+    streakCount: 10,
+    likes: 250,
+    commentsCount: 3,
+    user: {
+      fullName: "John Smith",
+      email: "john.smith@example.com",
+      profilePicUrl: "https://example.com/profile/john.jpg",
+      totalProjects: 20,
+      currentRank: 1,
+      currentStreak: 10,
+    },
+  },
+  {
+    id: "Mq4Tn8J5LwVzQk2RgXpN",
+    title: "Designing the Future",
+    description: "A visionary project focused on futuristic design concepts and architecture.",
+    project: "https://example.com/designing-the-future",
+    github: "https://github.com/username/designing-the-future",
+    images: [
+      "https://example.com/image5.jpg",
+      "https://example.com/image6.jpg",
+    ],
+    streakCount: 3,
+    likes: 90,
+    commentsCount: 1,
+    user: {
+      fullName: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      profilePicUrl: "https://example.com/profile/alice.jpg",
+      totalProjects: 8,
+      currentRank: 5,
+      currentStreak: 3,
+    },
+  },
+];
+
+export const comments = [
+  {
+    id: "Ql9FpT7RgMqX0JsDwkVz",
+    postId: "Xp7BsQ23lA9Dfh2jvK1z",
+    user: {
+      fullName: "Jane Doe",
+      email: "jane.doe@example.com",
+      profilePicUrl: "https://example.com/profile/jane.jpg",
+      totalProjects: 12,
+      currentRank: 3,
+      currentStreak: 5,
+    },
+    content: "This project looks amazing! Keep up the great work!",
+    replies: [
+      {
+        id: "Wp5Js8T3KnLqFgVzXpR9",
+        user: {
+          fullName: "John Smith",
+          email: "john.smith@example.com",
+          profilePicUrl: "https://example.com/profile/john.jpg",
+          totalProjects: 20,
+          currentRank: 1,
+          currentStreak: 10,
+        },
+        content: "Agreed, it's super impressive!",
+      },
+    ],
+  },
+  {
+    id: "Kn3LsP5QwT8RgMzVkJ0N",
+    postId: "Jt5NkR89sW0MfP4LgVzQ",
+    user: {
+      fullName: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      profilePicUrl: "https://example.com/profile/alice.jpg",
+      totalProjects: 8,
+      currentRank: 5,
+      currentStreak: 3,
+    },
+    content: "I love the idea of this project! Amazing job!",
+    replies: [
+      {
+        id: "Xp7FgT6Wn9LqMzVkJ0R2",
+        user: {
+          fullName: "Bob Brown",
+          email: "bob.brown@example.com",
+          profilePicUrl: "https://example.com/profile/bob.jpg",
+          totalProjects: 15,
+          currentRank: 2,
+          currentStreak: 7,
+        },
+        content: "Absolutely, it's groundbreaking!",
+      },
+      {
+        id: "Jm9Tn6WqXpL2VkR5FgMz",
+        user: {
+          fullName: "Charlie White",
+          email: "charlie.white@example.com",
+          profilePicUrl: "https://example.com/profile/charlie.jpg",
+          totalProjects: 5,
+          currentRank: 7,
+          currentStreak: 2,
+        },
+        content: "Can't wait to see the final results!",
+      },
+    ],
+  },
+];
