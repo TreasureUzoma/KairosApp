@@ -4,6 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-light-gray: var(--light-gray);
+  --color-gray: var(--gray);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -44,6 +46,8 @@
 }
 
 :root {
+  --gray: #444444;
+  --light-gray: #d4d4d4;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.028 261.692);
