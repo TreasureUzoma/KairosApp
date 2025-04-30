@@ -1,25 +1,48 @@
-import { posts } from "@/app/dummy";
-import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/firebase";
+import {
+    collection,
+    query,
+    orderBy,
+    limit,
+    startAfter,
+    getDocs
+} from "firebase/firestore";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  try {
-    const searchParams = req.nextUrl.searchParams;
-    const { page, limit } = Object.fromEntries(searchParams) as {
-      page: string;
-      limit: string;
-    };
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+    const lastCreatedAt = searchParams.get("lastCreatedAt");
 
-    const docLimit = parseInt(limit) || 10;
-    const nextPage = parseInt(page) || 1;
+    let postsQuery;
 
-    const streaks = posts.slice((nextPage - 1) * docLimit, docLimit);
+    if (lastCreatedAt) {
+        postsQuery = query(
+            collection(db, "posts"),
+            orderBy("createdAt", "desc"),
+            startAfter(new Date(lastCreatedAt)),
+            limit(pageSize)
+        );
+    } else {
+        postsQuery = query(
+            collection(db, "posts"),
+            orderBy("createdAt", "desc"),
+            limit(pageSize)
+        );
+    }
 
-    return NextResponse.json({ success: true, streaks });
-  } catch (error) {
-    console.log("[GET_HOME_PAGE_POSTS_ERROR]: ", error);
-    return NextResponse.json(
-      { success: false, message: "Internal Error" },
-      { status: 500 }
-    );
-  }
+    const snapshot = await getDocs(postsQuery);
+
+    const posts = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+
+    return NextResponse.json({
+        posts,
+        nextCursor: posts.length > 0 ? posts[posts.length - 1].createdAt.toDate().toISOString() : null
+    });
 }
+
+// usage example 
+// /api/posts?pageSize=10 or /api/posts?pageSize=10&lastCreatedAt=2024-12-01T10:20:00.000Z
