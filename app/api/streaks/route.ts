@@ -7,9 +7,9 @@ import {
     startAfter,
     getDocs
 } from "firebase/firestore";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
     const lastCreatedAt = searchParams.get("lastCreatedAt");

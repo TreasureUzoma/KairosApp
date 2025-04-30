@@ -1,9 +1,9 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     const session = await auth();
 
     if (!session || !session.user) {
