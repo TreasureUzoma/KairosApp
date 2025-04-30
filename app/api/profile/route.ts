@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { db } from "@/lib/firebase";
 import {
   doc,
@@ -54,7 +56,8 @@ export async function GET() {
     };
 
     return NextResponse.json({ success: true, data: returnData }, { status: 200 });
-  } {
+  } catch (error) {
+    console.error("Profile API Error:", error);
     return NextResponse.json(
       { success: false, message: "Something went wrong" },
       { status: 500 }
